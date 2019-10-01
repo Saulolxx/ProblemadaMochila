@@ -29,10 +29,21 @@
         <link  rel="stylesheet" href="dist/vendors/animate.css/animate.min.css">
         <link  rel="stylesheet" href="dist/vendors/custombox/custombox.min.css">
 		<!-- CSS Customization -->
-		<link rel="stylesheet" href="dist/css/custom.css">
+        <link rel="stylesheet" href="dist/css/custom.css">
+        <link rel="stylesheet" href="dist/css/loading.css">
 	</head>
 
 	<body class="u-body--header-side-push-left u-has-sidebar-navigation g-overflow-x-hidden g-transition-0_5">
+     <div class="loading-body">
+        <div class="loader">
+            <span class="box"></span>
+            <span class="box"></span>
+            <div class="code">
+                <img src="dist/img/bag.svg" width="120px">
+            </div>
+            <span class="txt text-uppercase">Carregando...</span>
+        </div>
+    </div>
 	  <main>
               <!-- Header -->
     <header class="u-header u-header--toggle-section u-header--change-appearance">
@@ -351,7 +362,7 @@
                 }
             };
                     $(window).on('load', () => {
-                        //$('.loading-body').delay(2000).fadeOut('slow');
+                        $('.loading-body').delay(2000).fadeOut('slow');
                         //console.log(elements);
 
                         //console.log($('#regularSliderAmount3').html());
