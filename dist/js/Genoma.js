@@ -1,6 +1,6 @@
 //import { sorteio , clone, tamanho } from './helpers-module.js';
 
-class Genoma{
+class Genoma {
 
     pesoTotal = 0;
     valorTotal = 0;
@@ -14,11 +14,27 @@ class Genoma{
      * 
      * @param {Array} membros 
      */
-    constructor(membros){
+    constructor(membros, taxaMutacao, pesoMaximo) {
+        console.log('Contrutor Genoma, peso: ' + pesoMaximo);
+
         this.membros = membros;
+
+        if (!taxaMutacao) {
+            this.taxaMutacao = 0.7;
+        } else {
+            this.taxaMutacao = taxaMutacao;
+        }
+
+        if (!pesoMaximo) {
+            this.pesoMaximo = 32;
+        } else {
+            this.pesoMaximo = pesoMaximo;
+        }
+
+
         // Garante a escolha aleatoria do Alelo de cada Gene 
-        for(var el in this.membros){
-            if(typeof this.membros[el]['ativo'] == 'undefined'){
+        for (var el in this.membros) {
+            if (typeof this.membros[el]['ativo'] == 'undefined') {
                 this.membros[el]['ativo'] = Math.round(Math.random());
             }
         }
@@ -30,8 +46,8 @@ class Genoma{
     /**
      * Gera a mutação de genes aleatórios do Genoma com base a taxa de mutação definida
      */
-    mutacao(){
-        if(Math.random() > this.taxaMutacao){
+    mutacao() {
+        if (Math.random() > this.taxaMutacao) {
             return false;
         }
 
@@ -46,9 +62,9 @@ class Genoma{
      *  Um valor inteiro que representa o valor do fitness atual
      */
 
-    calcFitness(){
+    calcFitness() {
         // Garante que o fitness ainda não foi calculado
-        if(this.fitnessTotal){
+        if (this.fitnessTotal) {
             return this.fitnessTotal;
         }
 
@@ -58,10 +74,10 @@ class Genoma{
         this.fitnessTotal = 0;
 
         // Percorre cada gene somando o valor de cada atributo ao seu total
-        for(let gene in this.membros){
-            if(this.membros[gene]['ativo']){
+        for (let gene in this.membros) {
+            if (this.membros[gene]['ativo']) {
                 this.valorTotal += this.membros[gene]['valor'];
-                this.pesoTotal  += this.membros[gene]['peso']; 
+                this.pesoTotal += this.membros[gene]['peso'];
             }
         }
 
@@ -69,7 +85,7 @@ class Genoma{
         this.fitnessTotal = this.valorTotal;
 
         // Punição caso o peso total exceda o peso máximo suportado pela mochila
-        if(this.pesoTotal > this.pesoMaximo){
+        if (this.pesoTotal > this.pesoMaximo) {
             this.fitnessTotal -= (this.pesoTotal - this.pesoMaximo) * 200;
         }
 
@@ -85,20 +101,20 @@ class Genoma{
      * @return
      *  Um array com os dois filhos filhos criados apartir do método
      */
-    crossover(outro, elementos){
+    crossover(outro, elementos) {
         let filho1 = {};
         let filho2 = {};
-        
+
         // Escolhendo a posição de maneira aleatória
         let pivot = Math.round(Math.random() * (tamanho(this.membros) - 1));
 
-       let i = 0;
+        let i = 0;
         // realizando o metodo crossover
-        for(let elemento in elementos){
-            if(i < pivot){
+        for (let elemento in elementos) {
+            if (i < pivot) {
                 filho1[elemento] = clone(this.membros[elemento]);
                 filho2[elemento] = clone(outro.membros[elemento]);
-            }else{
+            } else {
                 filho2[elemento] = clone(this.membros[elemento]);
                 filho1[elemento] = clone(outro.membros[elemento]);
             }
@@ -106,8 +122,8 @@ class Genoma{
             i++
         }
 
-        filho1 = new Genoma(filho1);
-        filho2 = new Genoma(filho2);
+        filho1 = new Genoma(filho1, this.taxaMutacao, this.pesoMaximo);
+        filho2 = new Genoma(filho2, this.taxaMutacao, this.pesoMaximo);
 
         return [filho1, filho2];
     }

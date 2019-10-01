@@ -1,11 +1,13 @@
 //let helper = require('./helpers-module');
 
-class Populacao{
+class Populacao {
 
-    genomas     = [];
-    elitismo    = 0.2;
-    tamanho     = 100;
-    elementos   = false;
+    genomas = [];
+    elitismo = 0.2;
+    tamanho = 100;
+    elementos = false;
+    setMutacao = 0.7;
+    setPesoMax = 32;
 
     /**
      * Inicializa uma nova população
@@ -13,10 +15,23 @@ class Populacao{
      * @param {Array} elementos 
      * @param {Integer} tamanho 
      */
-    constructor(elementos, tamanho){
-        if(!tamanho){
+    constructor(elementos, setMutacao, setPesoMax, tamanho) {
+        if (!tamanho) {
             tamanho = 10;
         }
+
+        if (!setMutacao) {
+            this.setMutacao = 0.7;
+        } else {
+            this.setMutacao = setMutacao;
+        }
+
+        if (!setPesoMax) {
+            this.setPesoMax = 32;
+        } else {
+            this.setPesoMax = setPesoMax;
+        }
+
 
         this.elementos = elementos;
         this.tamanho = tamanho;
@@ -27,11 +42,12 @@ class Populacao{
      * Cria e popula todos os Genomas da população
      * 
      */
-    popular(){
-        while(this.genomas.length < this.tamanho){
-            if(this.genomas.length < this.tamanho / 3){
-                this.genomas.push(new Genoma(clone(this.elementos)));
-            }else{
+    popular() {
+        while (this.genomas.length < this.tamanho) {
+            if (this.genomas.length < this.tamanho / 3) {
+                console.log("Populando peso" + this.setPesoMax);
+                this.genomas.push(new Genoma(clone(this.elementos), this.setMutacao, this.setPesoMax));
+            } else {
                 this.pCrossover();
             }
         }
@@ -40,7 +56,7 @@ class Populacao{
     /**
      * Ordena todos os Genomas pelo valor fitness
      */
-    sort(){
+    sort() {
         this.genomas.sort((a, b) => {
             return b.calcFitness() - a.calcFitness();
         });
@@ -49,18 +65,18 @@ class Populacao{
     /**
      * Ordena todos os Genomas pelo valor do fitness com a correção do peso
      */
-    wSort(){
+    wSort() {
         this.genomas.sort((a, b) => {
-            if(a.calcFitness() > b.calcFitness()){
-                if(a.pesoTotal > b.pesoTotal && a.pesoTotal > this.genomas.pesoMaximo) return 1;
+            if (a.calcFitness() > b.calcFitness()) {
+                if (a.pesoTotal > b.pesoTotal && a.pesoTotal > this.genomas.pesoMaximo) return 1;
                 return -1;
-            }else if(b.calcFitness() > a.calcFitness()){
-                if(b.pesoTotal > a.pesoTotal && b.pesoTotal > this.genomas.pesoMaximo) return -1;
+            } else if (b.calcFitness() > a.calcFitness()) {
+                if (b.pesoTotal > a.pesoTotal && b.pesoTotal > this.genomas.pesoMaximo) return -1;
                 return 1;
             }
 
-            if(a.pesoTotal < b.pesoTotal) return -1;
-            else if(b.pesoTotal < a.pesoTotal) return 1;
+            if (a.pesoTotal < b.pesoTotal) return -1;
+            else if (b.pesoTotal < a.pesoTotal) return 1;
 
             return 0;
         });
@@ -70,10 +86,10 @@ class Populacao{
      * Elimina os genomas com base no falor fitness
      * 
      */
-    selecao(){
+    selecao() {
         let b = Math.floor(this.elitismo * this.genomas.length);
 
-        while(this.genomas.length > b){
+        while (this.genomas.length > b) {
             this.genomas.pop();
         }
     }
@@ -82,13 +98,13 @@ class Populacao{
      * Seleciona os genomas para realização do crossover
      * 
      */
-    pCrossover(){
-        
+    pCrossover() {
+
         let key1 = sorteio(this.genomas);
         let key2 = sorteio(this.genomas);
 
         // Garante que o genoma não faça o crossover com ele mesmo
-        if(key2 == key1){
+        if (key2 == key1) {
             key2 = sorteio(this.genomas);
         }
 
@@ -99,7 +115,7 @@ class Populacao{
     /**
      * Cria a nova geração
      */
-    geracao(){
+    geracao() {
         this.sort(); // ordena os genomas
         this.selecao(); // elimina com base no elitismo
         this.pCrossover(); // realiza o crossover entre os pares de genomas randomicamente selecionados
@@ -112,20 +128,17 @@ class Populacao{
      * @param {integer} i  - Número da geração
      * @param {integer} nenhumaMelhoria  - Número de vezes que não houve alterações no fitness da população
      */
-    display(i, nenhumaMelhoria){
-        //console.log(this.genomas);
-        console.log($('#gen_no'));
+    display(i, nenhumaMelhoria) {
         $('#gen_no').text(i);
         $('#weight').text(this.genomas[0].pesoTotal);
         $('#value').text(this.genomas[0].fitnessTotal);
         $('#nochange').text(nenhumaMelhoria);
 
-        let tableElement  = $('table#tableElement tbody');
-        let arr;
-        let count = 0;
+        //let tableElement = $('table#tableElement tbody');
+        //let arr;
+        //let count = 0;
         $("#tableElement tbody tr").remove();
         $.each(this.genomas[0].membros, (i, v) => {
-            //console.log(v.ativo);
             addTableRow('table#tableElement', i, v.valor, v.peso, v.ativo);
         });
     }
@@ -138,20 +151,20 @@ class Populacao{
      * @param {integer} ultimoFitness - O número do ultimo fitness
      * @param {integer} i - Variavel de controle
      */
-    iniciar(limite, nenhumaMelhoria, ultimoFitness, i){
-        if(i > limite){
+    iniciar(limite, nenhumaMelhoria, ultimoFitness, i) {
+        if (i > limite) {
             return;
         }
-        if(!limite){
+        if (!limite) {
             limite = 1000; // Se limite não for definido, ele gerará 1000 gerações
         }
-        if(!nenhumaMelhoria){
+        if (!nenhumaMelhoria) {
             nenhumaMelhoria = 0; //inicializa as melhorias
         }
-        if(!ultimoFitness){
+        if (!ultimoFitness) {
             ultimoFitness = false; //inicia o ultimofitness
         }
-        if(!i){
+        if (!i) {
             i = 0;
         }
 
@@ -159,24 +172,24 @@ class Populacao{
          * Opcional - Controla o número de gerações através da quantidade de vezes que o fitness não foi alterado
          */
         //if(nenhumaMelhoria == 3){
-        //    return;
+        //    return ;
         //}
 
         i++;
 
-        if(nenhumaMelhoria < limite){
+        if (nenhumaMelhoria < limite) {
             ultimoFitness = this.genomas[0].calcFitness();
             this.geracao();
 
-            if(ultimoFitness >= this.genomas[0].calcFitness()){
+            if (ultimoFitness >= this.genomas[0].calcFitness()) {
                 nenhumaMelhoria++;
-            }else{
+            } else {
                 nenhumaMelhoria = 0;
             }
 
             i++;
 
-            if(i%10  == 0){
+            if (i % 10 == 0) {
                 this.display(i, nenhumaMelhoria);
             }
 
