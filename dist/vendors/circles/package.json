@@ -1,0 +1,70 @@
+{
+  "_args": [
+    [
+      "circles@0.2.0",
+      "C:\\Users\\saulo\\Desktop\\Projetos\\Desenvolvimento\\desafio-mochila"
+    ]
+  ],
+  "_from": "circles@0.2.0",
+  "_id": "circles@0.2.0",
+  "_inBundle": false,
+  "_integrity": "sha1-+bKHiC+ox440GPzzbdBxEVSVheQ=",
+  "_location": "/circles",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "circles@0.2.0",
+    "name": "circles",
+    "escapedName": "circles",
+    "rawSpec": "0.2.0",
+    "saveSpec": null,
+    "fetchSpec": "0.2.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/circles/-/circles-0.2.0.tgz",
+  "_spec": "0.2.0",
+  "_where": "C:\\Users\\saulo\\Desktop\\Projetos\\Desenvolvimento\\desafio-mochila",
+  "author": {
+    "name": "Akseli Palen",
+    "email": "akseli.palen@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/axelpale/circles/issues"
+  },
+  "dependencies": {
+    "hammerjs": "^2.0.4"
+  },
+  "description": "Circle user interface library targeted for artificial life simulations.",
+  "devDependencies": {
+    "browserify": "latest",
+    "jshint": "latest",
+    "minifyify": "^5.0.0",
+    "should": "^4.4.2",
+    "watchify": "^2.2.1"
+  },
+  "homepage": "https://github.com/axelpale/circles",
+  "keywords": [
+    "canvas",
+    "user interface",
+    "artificial life"
+  ],
+  "license": "MIT",
+  "main": "circles.js",
+  "name": "circles",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/axelpale/circles.git"
+  },
+  "scripts": {
+    "build": "npm run build:bundle && npm run build:min",
+    "build:bundle": "browserify src/circles.js --standalone circles -o circles.js",
+    "build:min": "browserify src/circles.js --standalone circles --debug --plugin [minifyify --map circles.min.js.map --output circles.min.js.map] > circles.min.js",
+    "build:watch": "watchify src/circles.js --standalone circles -o circles.js",
+    "lint": "jshint src/*.js test/circles.test.js",
+    "start": "python -m SimpleHTTPServer"
+  },
+  "version": "0.2.0"
+}

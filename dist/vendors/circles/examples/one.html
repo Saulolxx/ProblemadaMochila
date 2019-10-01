@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>One | Circles Example</title>
+  <style>
+    body { margin: 0; padding: 0; background: black; }
+  </style>
+</head>
+<body>
+
+  <script src="../circles.min.js"></script>
+  <script>
+  (function (circles) {
+    var world = circles.createWorld();
+    var c1 = world.createCircle(0, 0, 30, 'white');
+    c1.movePolar(200, -Math.PI / 4); // south east
+    c1.moveToward(500, 200, 300);
+    c1.on('tap', function () {
+      c1.moveBy(10, 10);
+    });
+
+    world.on('tap', function (world, x, y) {
+      world.createCircle(x, y, 20, 'red');
+    });
+  }(circles));
+  </script>
+
+</body>
+</html>
