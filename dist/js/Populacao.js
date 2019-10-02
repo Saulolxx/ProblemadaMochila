@@ -148,10 +148,15 @@ class Populacao {
      * @param {integer} ultimoFitness - O número do ultimo fitness
      * @param {integer} i - Variavel de controle
      */
-    iniciar(limite, nenhumaMelhoria, ultimoFitness, i) {
-        if (i > limite) {
+    iniciar(limite, delay, nenhumaMelhoria, ultimoFitness, i) {
+        if (i >= limite) {
             return;
         }
+
+        if(!delay || delay == 0){
+            delay = 1;
+        }
+
         if (!limite) {
             limite = 1000; // Se limite não for definido, ele gerará 1000 gerações
         }
@@ -184,17 +189,19 @@ class Populacao {
                 nenhumaMelhoria = 0;
             }
 
-            i++;
+            //i++;
 
-            if (i % 10 == 0) {
+            if (i % 10 == 0 && delay == 1) {
+                this.display(i, nenhumaMelhoria);
+            }else{
                 this.display(i, nenhumaMelhoria);
             }
 
             let scope = this;
 
             setTimeout(() => {
-                scope.iniciar(limite, nenhumaMelhoria, ultimoFitness, i)
-            }, 1);
+                scope.iniciar(limite, delay, nenhumaMelhoria, ultimoFitness, i)
+            }, delay);
 
             return false;
         }

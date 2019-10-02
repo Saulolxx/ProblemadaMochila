@@ -52,3 +52,8 @@ function addTableRow(selector, name, value, peso, isActive) {
     $(selector).append(newRow);
     return false;
 }
+
+function delay(milisecondDelay) {
+    milisecondDelay += Date.now();
+    while(Date.now() < milisecondDelay){}
+ }
