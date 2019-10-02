@@ -9328,6 +9328,80 @@ body.u-body--header-side-static-right .navbar [class*="u-main-nav-"] > .hs-has-m
   }
 }
 
+/*------------------------------------
+  Accordions
+------------------------------------*/
+.u-accordion__header {
+  padding: 0.71429rem 1.07143rem;
+}
+
+.u-accordion__body {
+  padding: 1.07143rem;
+}
+
+.u-accordion__control-icon i:nth-child(1) {
+  display: none;
+}
+
+.collapsed .u-accordion__control-icon i:nth-child(1) {
+  display: inline;
+}
+
+.u-accordion__control-icon i:nth-child(2) {
+  display: inline;
+}
+
+.collapsed .u-accordion__control-icon i:nth-child(2) {
+  display: none;
+}
+
+[aria-expanded="false"] .u-accordion__control-icon i:nth-child(1) {
+  display: inline;
+}
+
+[aria-expanded="false"] .u-accordion__control-icon i:nth-child(2) {
+  display: none;
+}
+
+[aria-expanded="true"] .u-accordion__control-icon i:nth-child(1) {
+  display: none;
+}
+
+[aria-expanded="true"] .u-accordion__control-icon i:nth-child(2) {
+  display: inline;
+}
+
+.u-accordion [class*="et-icon-"], .u-accordion-line-icon-pro {
+  position: relative;
+  top: 3px;
+}
+
+.u-accordion-color-primary .u-accordion__header [aria-expanded="true"] {
+  color: #3197D4 !important;
+}
+
+.u-accordion-color-white .u-accordion__header [aria-expanded="true"] {
+  color: #fff !important;
+}
+
+.u-accordion-bg-primary .u-accordion__header [aria-expanded="true"] {
+  background-color: #3197D4 !important;
+  border-color: #3197D4 !important;
+}
+
+.u-accordion-bg-white .u-accordion__header [aria-expanded="true"] {
+  background-color: #fff !important;
+  border-color: #fff !important;
+}
+
+.u-accordion-brd-primary .u-accordion__header [aria-expanded="true"] {
+  border-color: #3197D4 !important;
+}
+
+.u-accordion-brd-white .u-accordion__header [aria-expanded="true"] {
+  border-color: #fff !important;
+}
+
 /*--------------------------------------------------
   Counter v1
 ----------------------------------------------------*/

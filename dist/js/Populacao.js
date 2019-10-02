@@ -21,18 +21,15 @@ class Populacao {
         }
 
         if (!setMutacao) {
-            this.setMutacao = 0.7;
-        } else {
-            this.setMutacao = setMutacao;
+            setMutacao = 0.7;
         }
 
         if (!setPesoMax) {
-            this.setPesoMax = 32;
-        } else {
-            this.setPesoMax = setPesoMax;
+            setPesoMax = 32;
         }
 
-
+        this.setMutacao = setMutacao;
+        this.setPesoMax = setPesoMax;
         this.elementos = elementos;
         this.tamanho = tamanho;
         this.popular();
