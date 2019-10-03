@@ -14,7 +14,6 @@ function sorteio(genoma) {
             resultado = gene;
         }
     }
-
     return resultado;
 }
 

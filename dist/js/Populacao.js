@@ -42,7 +42,7 @@ class Populacao {
     popular() {
         while (this.genomas.length < this.tamanho) {
             if (this.genomas.length < this.tamanho / 3) {
-                console.log("Populando peso" + this.setPesoMax);
+                //console.log("Populando peso" + this.setPesoMax);
                 this.genomas.push(new Genoma(clone(this.elementos), this.setMutacao, this.setPesoMax));
             } else {
                 this.pCrossover();
@@ -92,17 +92,36 @@ class Populacao {
     }
 
     /**
+     * Torneio Binário
+     */
+    torneioBinario(){
+        let a = sorteio(this.genomas);
+        let b = sorteio(this.genomas);
+ 
+        while(a == b){
+            if(a === b) break;
+            b = sorteio(this.genomas);
+        }
+
+        if(this.genomas[b].calcFitness() > this.genomas[a].calcFitness()) return b;
+
+        return a;
+    }
+
+
+    /**
      * Seleciona os genomas para realização do crossover
      * 
      */
     pCrossover() {
 
-        let key1 = sorteio(this.genomas);
-        let key2 = sorteio(this.genomas);
+        let key1 = this.torneioBinario();
+        let key2 = this.torneioBinario();
 
         // Garante que o genoma não faça o crossover com ele mesmo
-        if (key2 == key1) {
-            key2 = sorteio(this.genomas);
+        while(key1 == key2){
+            if(key1 === key2) break;
+            key2 = this.torneioBinario();
         }
 
         let filhos = this.genomas[key1].crossover(this.genomas[key2], this.elementos);

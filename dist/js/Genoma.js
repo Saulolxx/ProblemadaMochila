@@ -15,7 +15,7 @@ class Genoma {
      * @param {Array} membros 
      */
     constructor(membros, taxaMutacao, pesoMaximo) {
-        console.log('Contrutor Genoma, peso: ' + pesoMaximo);
+        //console.log('Contrutor Genoma, peso: ' + pesoMaximo);
 
         this.membros = membros;
 
