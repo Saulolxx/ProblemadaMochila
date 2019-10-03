@@ -27,6 +27,12 @@ function clone(obj) {
     return obj;
 }
 
+
+/**
+ * Retorna o tamanho do Objeto
+ * 
+ * @param {object} obj 
+ */
 function tamanho(obj) {
     let tamanho = 0;
 
@@ -37,6 +43,16 @@ function tamanho(obj) {
     return tamanho;
 }
 
+
+/**
+ * Adiciona Nova tabela a Tabela
+ * 
+ * @param {object} selector 
+ * @param {String} name 
+ * @param {integer} value 
+ * @param {integer} peso 
+ * @param {integer} isActive 
+ */
 function addTableRow(selector, name, value, peso, isActive) {
     var newRow = $("<tr class='text-center'>");
     var cols = "";
@@ -53,7 +69,43 @@ function addTableRow(selector, name, value, peso, isActive) {
     return false;
 }
 
-function delay(milisecondDelay) {
-    milisecondDelay += Date.now();
-    while(Date.now() < milisecondDelay){}
+/**
+ * Adiciona novo elemento ao Objeto
+ * 
+ * @param {object} obj
+ * @param {String} name
+ * @param {integer} peso
+ * @param {integer} valor
+ */
+function addObj(obj, name, peso, valor){
+    return Object.assign({[name]:{"peso": peso, "valor": valor}}, obj);
+}
+
+/**
+ * Edita Elemento do Objeto
+ * 
+ * @param {object} obj
+ * @param {String} name
+ * @param {integer} peso
+ * @param {integer} valor
+ */
+function editObj(obj, name, peso, valor){
+    $.each(obj, (key, value) => {
+        if(key == name){
+            value.peso = peso;
+            value.valor = valor;
+        }
+    });
+
+    return obj;
+}
+
+/**
+ * Deletar um item do Objeto
+ * 
+ */
+
+ function delObj(obj,name){
+    delete obj[name];
+    return obj;
  }
