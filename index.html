@@ -268,8 +268,8 @@
                                                 <thead class="text-uppercase g-letter-spacing-1">
                                                     <tr>
                                                         <th class="g-font-weight-300 g-color-black text-center">Nome</th>
-                                                        <th class="g-font-weight-300 g-color-black text-center">Preço</th>
                                                         <th class="g-font-weight-300 g-color-black text-center">Peso</th>
+                                                        <th class="g-font-weight-300 g-color-black text-center">Preço</th>
                                                         <th class="g-font-weight-300 g-color-black text-center">Ações</th>
                                                     </tr>
                                                 </thead>
@@ -283,14 +283,14 @@
                                                         <td class="align-middle text-center">
                                         2 Kg
                                                         </td>
-                                                        <td class="align-middle text-center">
+                                                        <!--td class="align-middle text-center">
                                                             <a class="btn u-btn-primary g-py-5" href="#">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
                                                             <a class="btn u-btn-primary g-py-5" href="#">
                                                                     <i class="fa fa-trash"></i>
                                                             </a>
-                                                        </td>                                                        
+                                                        </td-->                                                        
                                                     </tr>
 
                                                 </tbody>
@@ -455,8 +455,8 @@
             }
         };
 
-        elements = delObj(elements, "Lapis");
-        console.log(elements);
+        //elements = delObj(elements, "Lapis");
+        //console.log(elements);
 
         $(document).on('ready', function() {
             // initialization of go to
@@ -474,29 +474,68 @@
 
             //Popular Tabela de Elementos
             let dataTemp = new Array();
+            let data = new Array();
             $.each(elements, (key, value) => {
                 let tempArray = new Array();
-                tempArray.push(key);
-                tempArray.push(value.peso);
-                tempArray.push(value.valor);
+                tempArray["nome"] = key;
+                tempArray["peso"] = value.peso;
+                tempArray["valor"] = value.valor;
 
-                dataTemp.push(tempArray);
-            })
-            $("#tableItems").DataTable({
-               data: dataTemp,
-               columns: [
-            { title: "Nome" },
-            { title: "preço" },
-            { title: "valor" },
-            {"data":null,"defaultContent":"<button>View</button>"}
-        ]
+                dataTemp.push(Object.assign({}, tempArray));
+            });
+            data["data"] = dataTemp;
+            //console.log(dataTemp);
+            var table = $("#tableItems").DataTable({
+                "data": dataTemp,
+                "columns": [
+                    { 
+                        "data" : "nome",
+                        "className": "text-center",
+                    },
+                    { 
+                        "data" : "peso",
+                        "className": "text-center",
+                        "render": (data ,type, row) => {
+                            return data + ' kg';
+                        }
+                    },
+                    { 
+                        "data" : "valor",
+                        "className": "text-center",
+                        "render": (data, type, row) => {
+                            return 'R$ '+ data;
+                        }
+                    },
+                    {   
+                        "data": null,
+                        "className": "text-center",
+                        "render": (data, type, row) => {
+                            return '<a data-item-name="'+ row.nome +'" class="btn btn-danger g-py-5 cmd_dellItem" href="#"><i class="fa fa-trash"></i></a> <!--a class="btn btn-success g-py-5" onClick="" href="#"><i class="fa fa-edit"></i></a-->';
+                        }
+                    }
+                ]
             });
 
+            console.log(elements);
             // initialization of HSMegaMenu plugin
             $('.js-mega-menu').HSMegaMenu({
                 event: 'hover',
                 pageContainer: $('.container'),
                 breakpoint: 991
+            });
+            
+            function delItem(nome){
+                delObj(elements, nome);
+                console.log(elements);          
+            }
+
+            $(".cmd_dellItem").on('click', (e) => {
+                e.preventDefault();
+                let name = $(e.currentTarget).attr('data-item-name');
+                delObj(elements, name);
+                table.destroy();
+                table.draw();
+                console.log(table);
             });
 
             $('.loading-body').delay(2000).fadeOut('slow');
