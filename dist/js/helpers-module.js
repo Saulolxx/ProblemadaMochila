@@ -77,7 +77,9 @@ function addTableRow(selector, name, value, peso, isActive) {
  * @param {integer} valor
  */
 function addObj(obj, name, peso, valor){
-    return Object.assign({[name]:{"peso": peso, "valor": valor}}, obj);
+
+    console.log("nome: "+ name +" peso: "+ peso +" valor: "+ valor);
+    return Object.assign({[name]:{"peso": parseFloat(peso), "valor": parseFloat(valor)}}, obj);
 }
 
 /**

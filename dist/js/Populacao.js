@@ -15,9 +15,9 @@ class Populacao {
      * @param {Array} elementos 
      * @param {Integer} tamanho 
      */
-    constructor(elementos, setMutacao, setPesoMax, tamanho) {
-        if (!tamanho) {
-            tamanho = 10;
+    constructor(elementos, setMutacao, setPesoMax, tam) {
+        if (!tam) {
+            tam = 10;
         }
 
         if (!setMutacao) {
@@ -31,7 +31,11 @@ class Populacao {
         this.setMutacao = setMutacao;
         this.setPesoMax = setPesoMax;
         this.elementos = elementos;
-        this.tamanho = tamanho;
+        this.tamanho = tam;
+        if(tamanho(this.elementos) < 2){
+            return false;
+        }
+        console.log(tamanho(this.elementos));
         this.popular();
     }
 
@@ -159,6 +163,9 @@ class Populacao {
         });
     }
 
+
+
+
     /**
      * Inicia o algoritmo genético
      * 
@@ -171,7 +178,10 @@ class Populacao {
         if (i >= limite) {
             return;
         }
-
+        if(tamanho(this.elementos) < 2){
+            return false;
+        }
+        console.log(tamanho(this.elementos));
         if(!delay || delay == 0){
             delay = 1;
         }

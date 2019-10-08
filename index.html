@@ -168,11 +168,6 @@
         <div class="container">
 
             <section class="g-bg-light mt-5">
-                <!--div class="row">
-                    <div class="col-lg-12">
-
-                    </div>
-                </div-->
                 <!-- Icon Blocks -->
                 <div class="row">
                     <div class="col-md-3 g-mb-40">
@@ -258,45 +253,28 @@
                             </div>
                             <div id="accordion-11-body-03" class="collapse" role="tabpanel" aria-labelledby="accordion-11-heading-03" data-parent="#accordion-11">
                                 <div class="u-accordion__body g-color-gray-dark-v5">
-                                    <div class="u-heading-v2-1--bottom g-brd-primary g-mb-30 text-center">
+                                        <button class="btn u-btn-outline-red float-right" id="btnClearItens"><i class="fa fa-trash"></i> Limpar Elementos</button>
+                                        <button class="mr-3 btn u-btn-outline-success float-right" id="btnCreateItem"><i class="fa fa-plus"></i> Adicionar Elemento</button>
+                                    <div class="u-heading-v2-1--bottom g-brd-primary g-mb-30 text-center g-clear--right">
                                         <h2 class="text-uppercase u-heading-v2__title g-mb-10">Lista de Itens</h2>
                                         <h4 class="g-font-weight-200">Todos os itens que serão adicionados a mochila e seus respectivos valores</h4>
                                     </div>
-                                        <!--Basic Table-->
-                                        <div class="table-responsive">
-                                            <table id="tableItems" class="table table-bordered u-table--v2 w-100">
-                                                <thead class="text-uppercase g-letter-spacing-1">
-                                                    <tr>
-                                                        <th class="g-font-weight-300 g-color-black text-center">Nome</th>
-                                                        <th class="g-font-weight-300 g-color-black text-center">Peso</th>
-                                                        <th class="g-font-weight-300 g-color-black text-center">Preço</th>
-                                                        <th class="g-font-weight-300 g-color-black text-center">Ações</th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="align-middle text-center text-nowrap">
-                                                            <h4 class="h6 g-mb-2">Celular</h4>
-                                                        </td>
-                                                        <td class="align-middle text-center">R$ 50,00</td>
-                                                        <td class="align-middle text-center">
-                                        2 Kg
-                                                        </td>
-                                                        <!--td class="align-middle text-center">
-                                                            <a class="btn u-btn-primary g-py-5" href="#">
-                                                                <i class="fa fa-edit"></i>
-                                                            </a>
-                                                            <a class="btn u-btn-primary g-py-5" href="#">
-                                                                    <i class="fa fa-trash"></i>
-                                                            </a>
-                                                        </td-->                                                        
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!--End Basic Table-->
+                                    <!--Basic Table-->
+                                    <div class="table-responsive">
+                                        <table id="tableItems" class="table table-bordered u-table--v2 w-100">
+                                            <thead class="text-uppercase g-letter-spacing-1">
+                                                <tr>
+                                                    <th class="g-font-weight-300 g-color-black text-center">Nome</th>
+                                                    <th class="g-font-weight-300 g-color-black text-center">Peso</th>
+                                                    <th class="g-font-weight-300 g-color-black text-center">Preço</th>
+                                                    <th class="g-font-weight-300 g-color-black text-center">Ações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--End Basic Table-->
 
                                 </div>
                             </div>
@@ -332,7 +310,6 @@
                 </tbody>
             </table>
         </div>
-        <!-- End modal window -->
     </main>
 
     <!-- JS Global Compulsory -->
@@ -361,6 +338,7 @@
     <script src="dist/vendors/jquery-ui/ui/position.js"></script>
     <script src="dist/vendors/jquery-ui/ui/unique-id.js"></script>
     <script src="dist/vendors/jquery-ui/ui/safe-active-element.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
     <!-- jQuery UI Helpers -->
     <script src="dist/vendors/jquery-ui/ui/widgets/menu.js"></script>
@@ -382,6 +360,8 @@
 
     <!-- JS Rube -->
     <script src="dist/js/components/hs.modal-window.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
 
     <script>
         var elements = {
@@ -430,8 +410,8 @@
                 "valor": 25
             },
             "Relógio": {
-                "peso": 2,
-                "valor": 80
+                "peso": 2.5,
+                "valor": 80.5
             },
             "Joias": {
                 "peso": 10,
@@ -472,21 +452,36 @@
             $.HSCore.helpers.HSHamburgers.init('.hamburger');
             $.HSCore.components.HSHeaderSide.init($('#sideNav'));
 
-            //Popular Tabela de Elementos
-            let dataTemp = new Array();
-            let data = new Array();
-            $.each(elements, (key, value) => {
-                let tempArray = new Array();
-                tempArray["nome"] = key;
-                tempArray["peso"] = value.peso;
-                tempArray["valor"] = value.valor;
+           // let data = new Array();
 
-                dataTemp.push(Object.assign({}, tempArray));
-            });
-            data["data"] = dataTemp;
-            //console.log(dataTemp);
+            data = formatData(elements);
+
+
+            function formatData(el){
+                let data = new Array();
+
+                $.each(el, (key, value) => {
+                    let tempArray = new Array();
+                    tempArray["nome"] = key;
+                    tempArray["peso"] = value.peso;
+                    tempArray["valor"] = value.valor;
+
+                    data.push(Object.assign({}, tempArray));
+                });
+
+                return data;
+            }
+
             var table = $("#tableItems").DataTable({
-                "data": dataTemp,
+                "data": formatData(elements),
+                "buttons": [
+                    {
+                        text: 'My button',
+                        action: function ( e, dt, node, config ) {
+                            alert( 'Button activated' );
+                        }
+                    }
+                ],
                 "columns": [
                     { 
                         "data" : "nome",
@@ -510,12 +505,153 @@
                         "data": null,
                         "className": "text-center",
                         "render": (data, type, row) => {
-                            return '<a data-item-name="'+ row.nome +'" class="btn btn-danger g-py-5 cmd_dellItem" href="#"><i class="fa fa-trash"></i></a> <!--a class="btn btn-success g-py-5" onClick="" href="#"><i class="fa fa-edit"></i></a-->';
+                            return '<a data-item-name="'+ row.nome +'" class="btn btn-danger link-unstyled g-py-5 cmd_dellItem g-color-white" ><i class="fa fa-trash g-color-white"></i></a> <!--a class="btn btn-success g-py-5" onClick="" href="#"><i class="fa fa-edit"></i></a-->';
                         }
                     }
-                ]
+                ],
+                "drawCallback" : (e) => {
+                    $(".cmd_dellItem").on('click', (e) => {
+                        e.preventDefault();
+
+                        Swal.fire({
+                            title: 'Tem certeza?',
+                            text: "Se deletar não terá mais como reaver esse item!",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Sim, deletar agora!',
+                            cancelButtonText: 'Cancelar',
+                            scrollbarPadding: false
+                            }).then((result) => {
+                                if (result.value) {
+                                    let name = $(e.currentTarget).attr('data-item-name');
+                                    delObj(elements, name);
+                                    table.clear().rows.add(formatData(elements)).draw();
+                                    Swal.fire({
+                                        title: 'Deletado!',
+                                        text: 'O elemento '+ name +' foi deletado com sucesso',
+                                        type: 'success',
+                                        scrollbarPadding: false
+                                    })
+                                }
+                            });
+                    });
+                }
             });
 
+            $("#btnCreateItem").on('click', (e) => {
+                e.preventDefault();
+
+                Swal.mixin({
+                        input: 'text',
+                        confirmButtonText: 'Próximo',
+                        cancelButtonText: 'Cancelar',
+                        showCancelButton: true,
+                        progressSteps: ['1', '2', '3'],
+                        scrollbarPadding: false,
+                        onOpen: () => {
+                            $('.frmPeso').mask('#0.00', {placeholder: "00.00 kg", reverse: true});
+                            $('.frmPreco').mask('#0,00', {placeholder: "R$ 00,00" ,reverse: true});
+                    }
+                    }).queue([
+                    {
+                        title: 'Adicionar Elemento',
+                        text: 'Informe o nome desejado do elemento:',
+                        input: 'text',
+                        inputClass: 'text-center',
+                        inputAttributes: {
+                            required: true
+                        },
+                        inputValidator: (value) => {
+                            if(!value){
+                                return 'Você precisa escolher um nome para o item';
+                            }
+                        }
+                    },
+                   {
+                       title: 'Adicionar Elemento',
+                       text: 'Informe o peso do elemento:',
+                       input: 'text',
+                       inputClass: 'text-center frmPeso',
+                       inputAttributes: {
+                           required: true
+                       },
+                       inputValidator: (value) => {
+                           if(!value){
+                               return 'Escolha um peso para o Item';
+                           }
+
+                           if(value <= 0){
+                               return 'O peso precisa ser maior que 0';
+                           }
+                       }
+                   },
+                   {
+                       title: 'Adicionar Elemento',
+                       text: 'Informe o preço do elemento:',
+                       input: 'text',
+                       inputClass: 'text-center frmPreco',
+                       inputAttributes: {
+                           required: true
+                       },
+                       inputValidator: (value) => {
+                           if(!value){
+                               return 'Escolha um preço para o Item';
+                           }
+
+                           if(value < 0){
+                               return 'O preço precisa ser maior que 0';
+                           }
+                       }
+                   }
+                    ]).then((result) => {
+                    if (result.value) {
+                        result.value[1] = result.value[1].replace(',', '.');
+                        result.value[2] = result.value[2].replace(',', '.');
+                        
+                        elements = addObj(elements, result.value[0], result.value[1], result.value[2]);
+                        table.clear().rows.add(formatData(elements)).draw();
+                        console.log(elements);
+                        Swal.fire({
+                            title: 'Sucesso!',
+                            text: 'O elemento '+ result.value[0] +' foi adicionado com sucesso!',
+                            confirmButtonText: 'Fechar',
+                            type: 'success',
+                            scrollbarPadding: false
+                        })
+                    }
+                });
+            });
+
+            $('#btnClearItens').on('click', (e) => {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: 'Deletar todos!',
+                    text: 'Tem certeza que deseja deletar todos os itens da tabela?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim, deletar todos!',
+                    cancelButtonText: 'Sair',
+                    scrollbarPadding: false
+                }).then((result) => {
+                    if(result.value){
+                        elements = {};
+
+                        table.clear().rows.add(formatData(elements)).draw();
+
+                        Swal.fire({
+                            title: 'Deletado',
+                            text: 'Lista de elementos foi zerada com sucesso',
+                            type: 'success',
+                            scrollbarPadding: false
+                        });
+                    }
+                });
+            });
             console.log(elements);
             // initialization of HSMegaMenu plugin
             $('.js-mega-menu').HSMegaMenu({
@@ -529,21 +665,22 @@
                 console.log(elements);          
             }
 
-            $(".cmd_dellItem").on('click', (e) => {
-                e.preventDefault();
-                let name = $(e.currentTarget).attr('data-item-name');
-                delObj(elements, name);
-                table.destroy();
-                table.draw();
-                console.log(table);
-            });
-
             $('.loading-body').delay(2000).fadeOut('slow');
             let p;
 
             $('#btn_init').on('click', () => {
-                p = new Populacao(clone(elements), $("#taxaMutacaoCount").html() / 100, $('#pesoMochila').val(), $("#tamPopulacaoCount").html());
-                p.iniciar($('#regularSliderAmount3').html(), $('#ctrDelayCount').html());
+                if(tamanho(elements) > 2){
+                    p = new Populacao(clone(elements), $("#taxaMutacaoCount").html() / 100, $('#pesoMochila').val(), $("#tamPopulacaoCount").html());
+                    p.iniciar($('#regularSliderAmount3').html(), $('#ctrDelayCount').html());
+                }else{
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Você não pode iniciar o algoritmo genético com menos de 2 elementos!',
+                        type: 'error',
+                        confirmButtonText: 'Sair',
+                        scrollbarPadding: false
+                    });
+                }
             });
 
             $("#sideNav-toggler").hover(() => {
