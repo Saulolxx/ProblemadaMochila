@@ -150,13 +150,13 @@ class Populacao {
      */
     display(i, nenhumaMelhoria) {
         $('#gen_no').text(i);
-        $('#weight').text(this.genomas[0].pesoTotal);
+        $('#weight').text(this.genomas[0].pesoTotal.toFixed(2));
         $('#value').text(this.genomas[0].fitnessTotal);
         $('#nochange').text(nenhumaMelhoria);
-
         //let tableElement = $('table#tableElement tbody');
         //let arr;
         //let count = 0;
+        console.log(this.genomas[0].pesoTotal.toFixed(2));
         $("#tableElement tbody tr").remove();
         $.each(this.genomas[0].membros, (i, v) => {
             addTableRow('table#tableElement', i, v.valor, v.peso, v.ativo);

@@ -80,9 +80,12 @@ class Genoma {
                 this.pesoTotal += this.membros[gene]['peso'];
             }
         }
+        
+        this.valorTotal = parseFloat(this.valorTotal.toFixed(2));
+        this.pesoTotal = parseFloat(this.pesoTotal.toFixed(2));
 
         // Define o valor do fitness - fitness será igual ao somatório de preços dos produtos
-        this.fitnessTotal = this.valorTotal;
+        this.fitnessTotal = parseFloat(this.valorTotal.toFixed(3));
 
         // Punição caso o peso total exceda o peso máximo suportado pela mochila
         if (this.pesoTotal > this.pesoMaximo) {
